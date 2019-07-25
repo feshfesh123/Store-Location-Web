@@ -1,0 +1,116 @@
+﻿@model StoreInfo.Models.StoreViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - StoreInfo</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <style>
+         /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+         #map {
+             height: 800px;
+             width: 800px;
+         }
+         /* Optional: Makes the sample page fill the window. */
+         html, body {
+             height: 100%;
+             margin: 0;
+             padding: 0;
+         }
+        .store-image {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 200px;
+            width: 330px;
+        }
+         .store-container{
+             height: 300px;
+             width: 350px;
+             padding : 8px;
+             background: rgb(128, 128, 128, 0.1);
+             border-radius: 2px;
+             display: inline-block;
+             margin: 12px;
+             position: relative;
+             box-shadow: 0 10px 18px rgba(0, 0, 0, 0.2), 0 5px 5px rgba(0, 0, 0, 0.2);
+         }
+         .store-container:hover{
+             background: rgba(128, 128, 128, 0.4);
+         }
+         .store-name{
+             color: rgba(0,0,0,0.8);
+             font-size: 22px;
+             font-weight: bold;
+         }
+        .store-address {
+            color: rgba(0,0,0,0.4);
+            font-size: 14px;
+        }
+        
+    </style>
+    <div class="container-fluid">
+        
+        <h1>Drink Store Location</h1>
+        <div class="row">
+            <div class="col-md-6">
+                @foreach (var store in Model.listStores)
+                {
+                    <div class="store-container" onmouseover="initMarker(@store.Latitude, @store.Longitude)">
+                        <div class="store-image" style="background-image:url(@store.ImgUrl)"></div>
+                        <span class="store-name">@store.Name</span><br />
+                        <span class="store-address">Mở cửa @store.TimeOpen</span><br />
+                        <span class="store-address">@store.Address</span>
+                    </div>
+                }
+            </div>
+            <div class="col-md-6">
+                <div id="map"></div>
+                
+                <script>
+                    function initMap() {
+                        var location = { lat: 10.7929784, lng: 106.6709992 };
+                        var map = new google.maps.Map(document.getElementById("map"), {
+                            zoom: 20,
+                            center: location
+                        }); 
+                        var marker = new google.maps.Marker({
+                            position: location,
+                            map: map
+                        });
+                    }
+
+                    function initMarker(lat, lng) {
+                        var location = new google.maps.LatLng(lat, lng);
+                        var map = new google.maps.Map(document.getElementById("map"), {
+                            zoom: 20,
+                            center: location
+                        }); 
+                        var marker = new google.maps.Marker({
+                            position: location,
+                            title: "Hello World!"
+                        });
+                        marker.setMap(null);
+                        marker.setMap(map);
+                    }
+                </script>
+                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC58Pa1xnAA7rcKkgAcwX28G0-gyWLpryU&callback=initMap"
+                        type="text/javascript"></script>
+            </div>
+        </div>
+    </div>
+</body>

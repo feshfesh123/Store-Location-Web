@@ -1,0 +1,13 @@
+﻿using StoreInfo.Data.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace StoreInfo.Data.Interface
+{
+    public interface IStore
+    {
+        IEnumerable<Store> GetAll();
+    }
+}
